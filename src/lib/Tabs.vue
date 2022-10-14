@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import Tab from "./Tab.vue";
-import { computed, ref, onMounted, onUpdated } from "vue";
+import { computed, ref, onMounted, onUpdated, watchEffect } from "vue";
 export default {
   props: {
     selected: {
@@ -48,7 +48,9 @@ export default {
     const indicator = ref<HTMLDivElement>(null);
     const container = ref<HTMLDivElement>(null);
 
-    const change = () => {
+    //使用watchEffect，在初次以及后续每次变化的时候触发，
+    //实时计算出下划线的宽度以及移动后的位置
+    watchEffect(() => {
       //获取被选中元素的div宽度
       const { width } = selectedItem.value.getBoundingClientRect();
       //成功将“导航1”的宽度赋值给下划线
@@ -60,12 +62,6 @@ export default {
       const left = left2 - left1;
       //点击不同的导航，下划线的left都要重新计算、生效
       indicator.value.style.left = left + "px";
-    };
-    onUpdated(() => {
-      change();
-    });
-    onMounted(() => {
-      change();
     });
 
     //defaults获取插槽内的东西
