@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import Tab from "./Tab.vue";
-import { computed, ref, onMounted, onUpdated, watchEffect } from "vue";
+import { computed, ref, watchEffect, onMounted } from "vue";
 export default {
   props: {
     selected: {
@@ -50,18 +50,22 @@ export default {
 
     //使用watchEffect，在初次以及后续每次变化的时候触发，
     //实时计算出下划线的宽度以及移动后的位置
-    watchEffect(() => {
-      //获取被选中元素的div宽度
-      const { width } = selectedItem.value.getBoundingClientRect();
-      //成功将“导航1”的宽度赋值给下划线
-      indicator.value.style.width = width + "px";
-      //获取container这个div的left值，在计算下换线移动位置的时候用到
-      const { left: left1 } = container.value.getBoundingClientRect();
-      //获取当前所选择的这个标签的left
-      const { left: left2 } = selectedItem.value.getBoundingClientRect();
-      const left = left2 - left1;
-      //点击不同的导航，下划线的left都要重新计算、生效
-      indicator.value.style.left = left + "px";
+    //将watchEffect嵌套在onMounted中是官方文档给的做法，因为watchEffect会在onMounted之前执行，
+    //但是此时很多变量还没有值，产生报错，这样做可以避免问题的出现
+    onMounted(() => {
+      watchEffect(() => {
+        //获取被选中元素的div宽度
+        const { width } = selectedItem.value.getBoundingClientRect();
+        //成功将“导航1”的宽度赋值给下划线
+        indicator.value.style.width = width + "px";
+        //获取container这个div的left值，在计算下换线移动位置的时候用到
+        const { left: left1 } = container.value.getBoundingClientRect();
+        //获取当前所选择的这个标签的left
+        const { left: left2 } = selectedItem.value.getBoundingClientRect();
+        const left = left2 - left1;
+        //点击不同的导航，下划线的left都要重新计算、生效
+        indicator.value.style.left = left + "px";
+      });
     });
 
     //defaults获取插槽内的东西
