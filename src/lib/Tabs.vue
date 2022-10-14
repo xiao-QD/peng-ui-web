@@ -8,7 +8,7 @@
         v-for="(item, index) in titles"
         :ref="
           (el) => {
-            if (el) navItems[index] = el;
+            if (item == selected) selectedItem = el;
           }
         "
         :key="index"
@@ -41,26 +41,22 @@ export default {
   },
   setup(props, context) {
     //在上面导航区div中，使用  :ref=" (el) => {if (el) navItems[index] = el;}"
-    //将div元素装进数组navItems中
+
     // ref<> ，尖括号中是TS的参数
-    const navItems = ref<HTMLDivElement[]>([]); //在定义的时候就规定这是一个装着div元素的数组
+    //selectedItem是当前选中的div
+    const selectedItem = ref<HTMLDivElement>(null);
     const indicator = ref<HTMLDivElement>(null);
     const container = ref<HTMLDivElement>(null);
 
     const change = () => {
-      const divs = navItems.value;
-      //获取到被选中的那个div元素
-      const result = divs.filter((div) =>
-        div.classList.contains("selected")
-      )[0];
       //获取被选中元素的div宽度
-      const { width } = result.getBoundingClientRect();
+      const { width } = selectedItem.value.getBoundingClientRect();
       //成功将“导航1”的宽度赋值给下划线
       indicator.value.style.width = width + "px";
       //获取container这个div的left值，在计算下换线移动位置的时候用到
       const { left: left1 } = container.value.getBoundingClientRect();
       //获取当前所选择的这个标签的left
-      const { left: left2 } = result.getBoundingClientRect();
+      const { left: left2 } = selectedItem.value.getBoundingClientRect();
       const left = left2 - left1;
       //点击不同的导航，下划线的left都要重新计算、生效
       indicator.value.style.left = left + "px";
@@ -104,7 +100,7 @@ export default {
       titles,
       current,
       select,
-      navItems,
+      selectedItem,
       indicator,
       container,
     };
