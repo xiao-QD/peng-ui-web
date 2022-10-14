@@ -1,16 +1,23 @@
 <template>
   <div class="peng-tabs">
     <!-- 导航区 -->
-    <div class="peng-tabs-nav">
+    <div class="peng-tabs-nav" ref="container">
       <div
         class="peng-tabs-nav-item"
         :class="{ selected: item == selected }"
         v-for="(item, index) in titles"
+        :ref="
+          (el) => {
+            if (el) navItems[index] = el;
+          }
+        "
         :key="index"
         @click="select(item)"
       >
         {{ item }}
       </div>
+      <!-- 会滑动的线 -->
+      <div class="peng-tabs-nav-indicator" ref="indicator"></div>
     </div>
     <!-- 内容区 -->
     <div class="peng-tabs-content">
@@ -25,7 +32,7 @@
 
 <script lang="ts">
 import Tab from "./Tab.vue";
-import { computed } from "vue";
+import { computed, ref, onMounted, onUpdated } from "vue";
 export default {
   props: {
     selected: {
@@ -33,6 +40,38 @@ export default {
     },
   },
   setup(props, context) {
+    //在上面导航区div中，使用  :ref=" (el) => {if (el) navItems[index] = el;}"
+    //将div元素装进数组navItems中
+    // ref<> ，尖括号中是TS的参数
+    const navItems = ref<HTMLDivElement[]>([]); //在定义的时候就规定这是一个装着div元素的数组
+    const indicator = ref<HTMLDivElement>(null);
+    const container = ref<HTMLDivElement>(null);
+
+    const change = () => {
+      const divs = navItems.value;
+      //获取到被选中的那个div元素
+      const result = divs.filter((div) =>
+        div.classList.contains("selected")
+      )[0];
+      //获取被选中元素的div宽度
+      const { width } = result.getBoundingClientRect();
+      //成功将“导航1”的宽度赋值给下划线
+      indicator.value.style.width = width + "px";
+      //获取container这个div的left值，在计算下换线移动位置的时候用到
+      const { left: left1 } = container.value.getBoundingClientRect();
+      //获取当前所选择的这个标签的left
+      const { left: left2 } = result.getBoundingClientRect();
+      const left = left2 - left1;
+      //点击不同的导航，下划线的left都要重新计算、生效
+      indicator.value.style.left = left + "px";
+    };
+    onUpdated(() => {
+      change();
+    });
+    onMounted(() => {
+      change();
+    });
+
     //defaults获取插槽内的东西
     const defaults = context.slots.default();
     //遍历插槽内东西，判断有无非tag标签
@@ -60,7 +99,15 @@ export default {
       context.emit("update:selected", title);
     };
 
-    return { defaults, titles, current, select };
+    return {
+      defaults,
+      titles,
+      current,
+      select,
+      navItems,
+      indicator,
+      container,
+    };
   },
 };
 </script>
@@ -74,6 +121,7 @@ $border-color: #d9d9d9;
     display: flex;
     color: $color;
     border-bottom: 1px solid $border-color;
+    position: relative;
     &-item {
       padding: 8px 0;
       margin: 0 16px;
@@ -84,6 +132,15 @@ $border-color: #d9d9d9;
       &.selected {
         color: $blue;
       }
+    }
+    &-indicator {
+      position: absolute;
+      height: 3px;
+      background: $blue;
+      left: 0;
+      bottom: -1px;
+      width: 100px;
+      transition: all 250ms;
     }
   }
   &-content {
