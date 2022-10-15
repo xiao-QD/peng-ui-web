@@ -6,7 +6,7 @@
         <h1>Peng-UI</h1>
         <h2>一个厉害的 UI 框架</h2>
         <p class="actions">
-          <a href="https://github.com">GitHub</a>
+          <a href="https://github.com/xiao-QD/peng-ui-2">GitHub</a>
           <router-link to="/doc">开始使用</router-link>
         </p>
       </div>
