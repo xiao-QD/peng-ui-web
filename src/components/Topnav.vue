@@ -1,20 +1,37 @@
 <template>
   <div class="topnav">
-    <div class="logo">
+    <router-link to="/" class="logo">
       <svg class="icon">
         <use xlink:href="#icon-peng"></use>
       </svg>
-    </div>
+    </router-link>
     <ul class="menu">
-      <li>菜单1</li>
-      <li>菜单2</li>
+      <li>
+        <router-link to="/doc">文档</router-link>
+      </li>
     </ul>
-    <span class="toggleAside" @click="toggleMenu"></span>
+    <!-- 当页面变窄的时候，按钮就会显现出来 -->
+    <!-- <span
+     
+    ></span> -->
+    <svg
+      class="icon toggleAside"
+      v-if="toggleMenuButtonVisible"
+      @click="toggleMenu"
+    >
+      <use xlink:href="#icon-caidan"></use>
+    </svg>
   </div>
 </template>
 <script lang="ts">
 import { inject, Ref } from "vue";
 export default {
+  props: {
+    toggleMenuButtonVisible: {
+      type: Boolean,
+      default: true,
+    },
+  },
   setup() {
     const menuVisible = inject<Ref<boolean>>("menuVisible"); // get
     const toggleMenu = () => {
@@ -54,7 +71,7 @@ export default {
   > .toggleAside {
     width: 24px;
     height: 24px;
-    background: red;
+    // background: red;
     position: absolute;
     left: 16px;
     top: 50%;
