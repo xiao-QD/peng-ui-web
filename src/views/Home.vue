@@ -42,6 +42,8 @@ export default {
     rgb(192, 230, 237) 59%,
     rgb(180, 180, 205) 100%
   );
+  //实现圆弧效果
+  clip-path: ellipse(80% 60% at 50% 40%);
 }
 
 .banner {
