@@ -1,7 +1,16 @@
-<template>我是开始也</template>
+<template>
+  <article class="markdown-body" v-html="md"></article>
+</template>
 
 <script>
-export default {};
+import md from "../markdown/get-started.md";
+export default {
+  data() {
+    return {
+      md,
+    };
+  },
+};
 </script>
 
 <style></style>

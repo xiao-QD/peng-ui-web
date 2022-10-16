@@ -1,7 +1,15 @@
-<template>intro</template>
+<template>
+  <article class="markdown-body" v-html="md"></article>
+</template>
 
 <script>
-export default {};
+import md from "../markdown/intro.md";
+export default {
+  data() {
+    return {
+      md,
+    };
+  },
+};
 </script>
-
 <style></style>
