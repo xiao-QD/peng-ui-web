@@ -6,14 +6,14 @@
       <h2>常规用法</h2>
 
       <div class="demo-component">
-        <Switch1Demo />
+        <component :is="Switch1Demo"></component>
       </div>
 
       <div class="demo-actions">
-        <Button>查看代码</Button>
+        <Button @click="show1 = !show1">查看代码</Button>
       </div>
 
-      <div class="demo-code">
+      <div class="demo-code" v-show="show1">
         <pre>{{ Switch1Demo.__sourceCode }}</pre>
       </div>
     </div>
@@ -23,31 +23,32 @@
       <h2>支持 disabled</h2>
 
       <div class="demo-component">
-        <Switch2Demo />
+        <component :is="Switch2Demo"></component>
       </div>
 
       <div class="demo-actions">
-        <Button>查看代码</Button>
+        <Button @click="show2 = !show2">查看代码</Button>
       </div>
 
-      <div class="demo-code">
+      <div class="demo-code" v-show="show2">
         <pre>{{ Switch2Demo.__sourceCode }}</pre>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import Switch from "../lib/Switch.vue";
 import Button from "../lib/Button.vue";
 import Switch1Demo from "./Switch1.demo.vue";
 import Switch2Demo from "./Switch2.demo.vue";
 
 import { ref } from "vue";
 export default {
-  components: { Switch, Button, Switch1Demo, Switch2Demo },
+  components: { Button },
   setup() {
-    const bool = ref(false);
-    return { bool, Switch1Demo, Switch2Demo };
+    const show1 = ref(false);
+    const show2 = ref(false);
+
+    return { Switch1Demo, Switch2Demo, show1, show2 };
   },
 };
 </script>
