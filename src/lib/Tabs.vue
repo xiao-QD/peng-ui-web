@@ -72,11 +72,12 @@ export default {
     //defaults获取插槽内的东西
     const defaults = context.slots.default();
     //遍历插槽内东西，判断有无非tag标签
-    // defaults.forEach((tag) => {
-    //   if (tag.type != Tab) {
-    //     throw new Error("监测到Tabs的字标签不是Tab,请改为Tab");
-    //   }
-    // });
+    defaults.forEach((tag) => {
+      // @ts-ignore
+      if (tag.type.name != Tab.name) {
+        throw new Error("监测到Tabs的字标签不是Tab,请改为Tab");
+      }
+    });
 
     //获取所有tab的title
     const titles = defaults.map((item) => {
