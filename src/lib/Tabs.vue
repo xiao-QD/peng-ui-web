@@ -40,6 +40,7 @@ export default {
     },
   },
   setup(props, context) {
+    // @ts-ignore
     //在上面导航区div中，使用  :ref=" (el) => {if (el) navItems[index] = el;}"
 
     // ref<> ，尖括号中是TS的参数
@@ -71,11 +72,11 @@ export default {
     //defaults获取插槽内的东西
     const defaults = context.slots.default();
     //遍历插槽内东西，判断有无非tag标签
-    defaults.forEach((tag) => {
-      if (tag.type != Tab) {
-        throw new Error("监测到Tabs的字标签不是Tab,请改为Tab");
-      }
-    });
+    // defaults.forEach((tag) => {
+    //   if (tag.type != Tab) {
+    //     throw new Error("监测到Tabs的字标签不是Tab,请改为Tab");
+    //   }
+    // });
 
     //获取所有tab的title
     const titles = defaults.map((item) => {
