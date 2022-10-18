@@ -1,69 +1,135 @@
 <template>
-  <div>Button 示例</div>
-  <h2>示例1</h2>
-  <div>
-    <Button @click="onClick">你好</Button>
-    <Button theme="button">你好</Button>
-    <Button theme="link">你好</Button>
-    <Button theme="text">你好</Button>
-  </div>
-  <h2>示例2</h2>
-  <div>
-    <div>
-      <Button size="big">大大大</Button>
-      <Button>普普通</Button>
-      <Button size="small">小小小</Button>
+  <h1>Button组件展示</h1>
+  <!-- 1.常规用法 -->
+  <div class="demo">
+    <h2>常规用法</h2>
+    <div class="demo-component">
+      <component :is="Bdemo1" />
     </div>
-    <div>
-      <Button theme="link" size="big">大大大</Button>
-      <Button theme="link">普普通</Button>
-      <Button size="small" theme="link">小小小</Button>
+    <div class="demo-actions">
+      <Button @click="show1 = !show1">查看代码</Button>
     </div>
-    <div>
-      <Button size="big" theme="text">大大大</Button>
-      <Button theme="text">普普通</Button>
-      <Button size="small" theme="text">小小小</Button>
+    <div class="demo-code" v-show="show1">
+      <pre>{{ Bdemo1.__sourceCode }}</pre>
     </div>
   </div>
-  <h2>示例3</h2>
-  <div>
-    <div>
-      <Button level="main">主要按钮</Button>
-      <Button>普通按钮</Button>
-      <Button level="danger">危险按钮</Button>
+
+  <!-- 2.不同大小 -->
+  <div class="demo">
+    <h2>不同大小</h2>
+    <div class="demo-component">
+      <component :is="Bdemo2"></component>
     </div>
-    <div>
-      <Button theme="link" level="main">主要链接按钮</Button>
-      <Button theme="link">普通链接按钮</Button>
-      <Button theme="link" level="danger">危险链接按钮</Button>
+    <div class="demo-actions">
+      <Button @click="show2 = !show2">查看代码</Button>
     </div>
-    <div>
-      <Button theme="text" level="main">主要文字按钮</Button>
-      <Button theme="text">普通文字按钮</Button>
-      <Button theme="text" level="danger">危险文字按钮</Button>
+    <div class="demo-code" v-show="show2">
+      <pre>{{ Bdemo2.__sourceCode }}</pre>
     </div>
   </div>
-  <h2>示例4</h2>
-  <div>
-    <Button disabled>禁用按钮</Button>
-    <Button theme="link" disabled>禁用链接按钮</Button>
-    <Button theme="text" disabled>禁用按钮</Button>
+
+  <!-- 3不同优先级 -->
+  <div class="demo">
+    <h2>不同level</h2>
+    <div class="demo-component">
+      <component :is="Bdemo3"></component>
+    </div>
+    <div class="demo-actions">
+      <Button @click="show3 = !show3">查看代码</Button>
+    </div>
+    <div class="demo-code" v-show="show3">
+      <pre>{{ Bdemo3.__sourceCode }}</pre>
+    </div>
   </div>
-  <h2>示例5</h2>
-  <div>
-    <Button loading>加载中</Button>
-    <Button>加载完毕</Button>
+
+  <!-- 4支持禁用 -->
+  <div class="demo">
+    <h2>支持禁用</h2>
+    <div class="demo-component">
+      <component :is="Bdemo4"></component>
+    </div>
+    <div class="demo-actions">
+      <Button @click="show4 = !show4">查看代码</Button>
+    </div>
+    <div class="demo-code" v-show="show4">
+      <pre>{{ Bdemo4.__sourceCode }}</pre>
+    </div>
+  </div>
+
+  <!-- 5加载中 -->
+  <div class="demo">
+    <h2>加载中</h2>
+    <div class="demo-component">
+      <component :is="Bdemo5"></component>
+    </div>
+    <div class="demo-actions">
+      <Button @click="show5 = !show5">查看代码</Button>
+    </div>
+    <div class="demo-code" v-show="show5">
+      <pre>{{ Bdemo5.__sourceCode }}</pre>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import Button from "../lib/Button.vue";
+import Bdemo1 from "./Bdemo/Bdemo1.vue";
+import Bdemo2 from "./Bdemo/Bdemo2.vue";
+import Bdemo3 from "./Bdemo/Bdemo3.vue";
+import Bdemo4 from "./Bdemo/Bdemo4.vue";
+import Bdemo5 from "./Bdemo/Bdemo5.vue";
+import { ref } from "vue";
+
 export default {
   components: { Button },
   setup() {
-    const onClick = () => {
-      console.log("hi");
+    const show1 = ref(false);
+    const show2 = ref(false);
+    const show3 = ref(false);
+    const show4 = ref(false);
+    const show5 = ref(false);
+
+    return {
+      Bdemo1,
+      Bdemo2,
+      Bdemo3,
+      Bdemo4,
+      Bdemo5,
+
+      show1,
+      show2,
+      show3,
+      show4,
+      show5,
     };
-    return { onClick };
   },
 };
 </script>
+
+<style lang="scss" scoped>
+$border-color: #d9d9d9;
+.demo {
+  border: 1px solid $border-color;
+  margin: 16px 0 32px;
+  > h2 {
+    font-size: 20px;
+    padding: 8px 16px;
+    border-bottom: 1px solid $border-color;
+  }
+  &-component {
+    padding: 16px;
+  }
+  &-actions {
+    padding: 8px 16px;
+    border-top: 1px dashed $border-color;
+  }
+  &-code {
+    padding: 8px 16px;
+    border-top: 1px dashed $border-color;
+    > pre {
+      line-height: 1.1;
+      font-family: Consolas, "Courier New", Courier, monospace;
+      margin: 0;
+    }
+  }
+}
+</style>

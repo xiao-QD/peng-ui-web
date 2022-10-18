@@ -1,24 +1,63 @@
 <template>
-  <div>Tabs 示例111</div>
-  <Tabs v-model:selected="x">
-    <Tab title="导航1">内容1</Tab>
-    <Tab title="导航222222">内容22222</Tab>
-  </Tabs>
+  <h1></h1>
+  <div class="demo">
+    <div class="demo-component">
+      <component :is="Tdemo" />
+    </div>
+    <div class="demo-actions">
+      <Button @click="show1 = !show1">查看代码</Button>
+    </div>
+    <div class="demo-code" v-show="show1">
+      <pre>{{ Tdemo.__sourceCode }}</pre>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import Tabs from "../lib/Tabs.vue";
-import Tab from "../lib/Tab.vue";
+import Tdemo from "./Tdemo.vue";
+import Button from "../lib/Button.vue";
 import { ref } from "vue";
+
 export default {
   components: {
-    Tabs,
-    Tab,
+    Button,
   },
 
   setup() {
-    const x = ref("导航222222");
-    return { x };
+    const show1 = ref(false);
+    return {
+      Tdemo,
+      show1,
+    };
   },
 };
 </script>
+
+<style lang="scss" scoped>
+$border-color: #d9d9d9;
+.demo {
+  border: 1px solid $border-color;
+  margin: 16px 0 32px;
+  > h2 {
+    font-size: 20px;
+    padding: 8px 16px;
+    border-bottom: 1px solid $border-color;
+  }
+  &-component {
+    padding: 16px;
+  }
+  &-actions {
+    padding: 8px 16px;
+    border-top: 1px dashed $border-color;
+  }
+  &-code {
+    padding: 8px 16px;
+    border-top: 1px dashed $border-color;
+    > pre {
+      line-height: 1.1;
+      font-family: Consolas, "Courier New", Courier, monospace;
+      margin: 0;
+    }
+  }
+}
+</style>
